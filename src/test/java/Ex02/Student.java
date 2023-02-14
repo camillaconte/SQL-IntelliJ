@@ -14,7 +14,8 @@ public class Student {
     }
 
     public String insertStudentDb(){
-        String studentQuery = "INSERT INTO newdb.students (first_name, last_name) VALUES ('" + this.firstName + "\', \'" + this.lastName + "\');";
+        String studentQuery = "INSERT INTO newdb.students (first_name, last_name) VALUES ('"
+                + this.firstName + "\', \'" + this.lastName + "\');";
         return studentQuery;
     }
 }

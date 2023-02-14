@@ -6,55 +6,36 @@ import java.util.List;
 
 public class TableCreation {
 
-    public static void main(String[] args) {
+        /**
+         * JDBC = Java DataBase Connectivity
+         * We have to download the JDBC Driver
+         * Software that allows Java application to intercact with the DB
+         * How? Converts requests from Java program to protocols that DB can understand
+         *
 
-        Connection conn = null;
-        PreparedStatement ps = null;
+         */
 
-        try {
-            // db parameters
-            String url = "jdbc:mysql://localhost:3306/newdb";
-            String user = "root";
-            String password = "password";
+        //va reso generico! ora è solo per la tabella "students"!
+        public static void createTable () {
+            Connection conn = null;
+            PreparedStatement ps = null;
 
-            // create a connection to the database
-            conn = DriverManager.getConnection(url, user, password);
-            //create TABLE
-            String createTable = "CREATE TABLE IF NOT EXISTS newdb.students(\n" +
-                    "student_id INT(10) NOT NULL AUTO_INCREMENT,\n" +
-                    "first_name VARCHAR(30),\n" +
-                    "last_name VARCHAR(30),\n" +
-                    "constraint student_pk PRIMARY KEY (student_id));";
-
-            ps = conn.prepareStatement(createTable);
-            ps.execute();
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
             try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-        }
-
-        List<Student> studentsToAdd = new ArrayList<>();
-        studentsToAdd.add(0, new Student("Ringo", "Star"));
-        studentsToAdd.add(1, new Student("Paul", "McCartney"));
-        studentsToAdd.add(2, new Student("George", "Harrison"));
-        studentsToAdd.add(3, new Student("John", "Lennon"));
-
-        for(Student student : studentsToAdd) {
-            try {
+                // db parameters
                 String url = "jdbc:mysql://localhost:3306/newdb";
                 String user = "root";
                 String password = "password";
 
+                // create a connection to the database
                 conn = DriverManager.getConnection(url, user, password);
-                ps = conn.prepareStatement(student.insertStudentDb());
+                //create TABLE
+                String createTable = "CREATE TABLE IF NOT EXISTS students(\n" +
+                        "student_id INT(10) NOT NULL AUTO_INCREMENT,\n" +
+                        "first_name VARCHAR(30),\n" +
+                        "last_name VARCHAR(30),\n" +
+                        "constraint student_pk PRIMARY KEY (student_id));";
+
+                ps = conn.prepareStatement(createTable);
                 ps.execute();
 
             } catch (SQLException e) {
@@ -70,9 +51,18 @@ public class TableCreation {
             }
         }
 
-            /*
-            Statement stmt = conn.prepareStatement();
-            ResultSet rs = stmt.executeQuery("SELECT ");
-            rs.next()*/
+        /*
+        try{
+           //
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/newdb",  "root", "password");
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM students");
+            while (resultSet.next()){
+                System.out.println(resultSet.getString("first_name"));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }*/
+
     }
-}
+
