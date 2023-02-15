@@ -4,10 +4,18 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-public class StudentCreation {
+public class StudentDatabase {
+
+    /**
+     * Questo metodo serve sia per inserire nel DB un oggetto studente che è già stato creato
+     * Sia per crearne uno nuovo al volo dentro al metodo createStudentAndInsertDb
+     */
+    public static String insertStudentDb(Student student){
+        String studentQuery = "INSERT INTO newdb.students (first_name, last_name) VALUES ('"
+                + student.firstName + "\', \'" + student.lastName + "\');";
+        return studentQuery;
+    }
 
     public static void createStudentAndInsertDb (String firstName, String lastName) {
         Connection conn = null;
@@ -18,7 +26,8 @@ public class StudentCreation {
             String password = "password";
 
             conn = DriverManager.getConnection(url, user, password);
-            ps = conn.prepareStatement(new Student(firstName, lastName).insertStudentDb());
+            ps = conn.prepareStatement(insertStudentDb(new Student(firstName, lastName)));
+            //ps = conn.prepareStatement(new Student(firstName, lastName).insertStudentDb());
             ps.execute();
 
             //COME FACCIO ORA A FAR CORRISPONDERE IL NOME DELL'OGGETTO STUDENTE

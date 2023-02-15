@@ -6,16 +6,10 @@ import java.util.List;
 
 public class TableCreation {
 
-        /**
-         * JDBC = Java DataBase Connectivity
-         * We have to download the JDBC Driver
-         * Software that allows Java application to intercact with the DB
-         * How? Converts requests from Java program to protocols that DB can understand
-         *
-
-         */
-
-        //va reso generico! ora è solo per la tabella "students"!
+    /**
+     * il prossimo passo è rendere questo metodo generico come ho fatto per altri metodi!
+     * ora è solo per la tabella "students"!
+     */
         public static void createTable () {
             Connection conn = null;
             PreparedStatement ps = null;
