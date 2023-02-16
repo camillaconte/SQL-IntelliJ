@@ -67,8 +67,7 @@ public class Main {
          * add a new string column of 30 chars called country to the students table
          * populate the new column with Italy for 2 students and Germany for the other 2 students
          */
-        //Vede Italy come una colonna e non come un valore della colonna
-        //"Unknown column 'italy' in 'field list'"
+
         Tools.updateRow("newdb", "students", "country", "italy", "last_name", studentsToAdd.get(0).lastName);
 }
 }
