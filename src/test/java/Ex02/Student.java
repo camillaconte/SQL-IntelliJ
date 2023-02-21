@@ -12,12 +12,4 @@ public class Student {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-
-    /* QUESTO FORSE LO METTO NELLA CLASSE STUDENT DATABASE O TOOLS PERCHè QUI NON HA SENSO...
-
-    public String insertStudentDb(){
-        String studentQuery = "INSERT INTO newdb.students (first_name, last_name) VALUES ('"
-                + this.firstName + "\', \'" + this.lastName + "\');";
-        return studentQuery;
-    }*/
 }

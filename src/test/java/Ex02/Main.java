@@ -8,10 +8,11 @@ public class Main {
     public static void main(String[] args) {
 
         /**
-         * Exercise SQL02: TABLE students and POPULATE WITH 4 random students
-         * (emember that you need only to insert last_name and first_name
+         * Exercise SQL02: Create a TABLE called students and POPULATE it WITH 4 random students
+         * (remember that you need only to insert last_name and first_name
          * because the primary key is auto-incremented)
          */
+
         TableCreation.createTable();
 
         List<Student> studentsToAdd = new ArrayList<>();
@@ -60,14 +61,21 @@ public class Main {
             System.out.println(lastName);
         }
 
-        Tools.createNewColumn("newdb", "students", "country");
-
         /**
          * Exercise SQL4:
          * add a new string column of 30 chars called country to the students table
          * populate the new column with Italy for 2 students and Germany for the other 2 students
          */
 
-        Tools.updateRow("newdb", "students", "country", "italy", "last_name", studentsToAdd.get(0).lastName);
+        Tools.createNewColumn("newdb", "students", "country", "VARCHAR(30)");
+        Tools.updateRow("newdb", "students", "country", "Italy",
+                "last_name", studentsToAdd.get(0).lastName);
+        Tools.updateRow("newdb", "students", "country", "Italy",
+                "last_name", studentsToAdd.get(1).lastName);
+        Tools.updateRow("newdb", "students", "country", "Germany",
+                "last_name", studentsToAdd.get(2).lastName);
+        Tools.updateRow("newdb", "students", "country", "Germany",
+                "last_name", studentsToAdd.get(3).lastName);
+
 }
 }

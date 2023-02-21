@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class Tools {
 
-    public static void createNewColumn (String database, String tableName, String newColumn) {
+    public static void createNewColumn (String database, String tableName, String newColumn, String columnType) {
         Connection conn = null;
         PreparedStatement ps = null;
 
@@ -19,7 +19,7 @@ public class Tools {
             // create a connection to the database
             conn = DriverManager.getConnection(url, user, password);
             //create TABLE
-            String query = "ALTER TABLE " + tableName + " ADD " + newColumn + " VARCHAR(30);";
+            String query = "ALTER TABLE " + tableName + " ADD " + newColumn + " " + columnType + ";";
 
             ps = conn.prepareStatement(query);
             ps.execute();

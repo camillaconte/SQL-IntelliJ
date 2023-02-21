@@ -17,6 +17,12 @@ public class StudentDatabase {
         return studentQuery;
     }
 
+    public static String insertElementIntoDB(Object object, String databaseName, String tableName, String columnName, String value){
+        String query = "INSERT INTO " + databaseName + "." + tableName + "(" + columnName + ") VALUES ('" +
+                object + "." + value + "\');";
+        return query;
+    }
+
     public static void createStudentAndInsertDb (String firstName, String lastName) {
         Connection conn = null;
         PreparedStatement ps = null;
