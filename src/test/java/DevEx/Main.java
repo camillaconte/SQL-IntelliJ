@@ -19,14 +19,25 @@ public class Main {
             throw new RuntimeException(e);
         }
 
+        try {
+            ToolsDB.createNewColumn("newdb", "students", "first_name", "VARCHAR(30)");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            ToolsDB.createNewColumn("newdb", "students", "last_name", "VARCHAR(30)");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
         List<Student> studentsToAdd = new ArrayList<>();
         studentsToAdd.add(0, new Student("Ringo", "Star"));
         studentsToAdd.add(1, new Student("Paul", "McCartney"));
         studentsToAdd.add(2, new Student("George", "Harrison"));
         studentsToAdd.add(3, new Student("John", "Lennon"));
 
-        //N.B. qui ci vorrebbe un modo per fare sì che non si possano
-        //duplicare gli studenti ogni volta che faccio partire il programma!
         for(Student student : studentsToAdd) {
             try {
                 StudentDB.insertStudentDb(student);
@@ -43,30 +54,12 @@ public class Main {
          * once the query is completed, print all the surnames
          */
 
-        List <String> firstNames = new ArrayList<>(); //GIA' CHE CI SONO MI SALVO ANCHE QUESTI
-        List <String> lastNames = new ArrayList<>();
+        List <String> studentNames = new ArrayList<>();
 
-        try{
-            Connection conn = null;
-            PreparedStatement ps = null;
-
-            //connection to DB with "shortcut"
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/newdb",  "root", "password");
-
-            Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM students");
-
-            while (resultSet.next()){
-                System.out.println(resultSet.getString("first_name"));
-                firstNames.add(resultSet.getString("first_name"));
-                lastNames.add(resultSet.getString("last_name"));
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-
-        for(String lastName : lastNames){
-            System.out.println(lastName);
+        try {
+            studentNames = StudentDAO.getAllStudents();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
         /**
@@ -75,15 +68,100 @@ public class Main {
          * populate the new column with Italy for 2 students and Germany for the other 2 students
          */
 
-        /*ConnectionDB.createNewColumn("newdb", "students", "country", "VARCHAR(30)");
-        ConnectionDB.updateRow("newdb", "students", "country", "Italy",
-                "last_name", studentsToAdd.get(0).lastName);
-        ConnectionDB.updateRow("newdb", "students", "country", "Italy",
-                "last_name", studentsToAdd.get(1).lastName);
-        ConnectionDB.updateRow("newdb", "students", "country", "Germany",
-                "last_name", studentsToAdd.get(2).lastName);
-        ConnectionDB.updateRow("newdb", "students", "country", "Germany",
-                "last_name", studentsToAdd.get(3).lastName);
+        try {
+            ToolsDB.createNewColumn("newdb", "students", "country", "VARCHAR(30)");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            ToolsDB.updateRowByKnownValue("newdb", "students", "country",
+                                         "Italy", "last_name", "Star");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            ToolsDB.updateRowByKnownValue("newdb", "students", "country",
+                    "Italy", "id", "2");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        //inserting a new column, "fiscalCode"
+        try {
+            ToolsDB.createNewColumn("newdb", "students", "fiscalCode", "VARCHAR(30)");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        //updating column "fiscalCode" for student whose last name is Harrison
+        try {
+            ToolsDB.updateRowByKnownValue("newdb", "students", "fiscalCode",
+                    "HRRGRG45R13455D", "last_name", "Harrison");
+            System.out.println("Harrison's fiscal code has been updated");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        //updating student Hallison's column "country" with "Germany" USING IS FISCALCODE
+        try {
+            ToolsDB.updateRowByKnownValue("newdb", "students", "country",
+                    "Germany", "fiscalCode", "HRRGRG45R13455D");
+            System.out.println("Hallison's country has been updated");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        //updating student Lennon's country with "Germany"
+        try {
+            ToolsDB.updateRowByKnownValue("newdb", "students", "country",
+                    "Germany", "last_name", "Lennon");
+            System.out.println("Lennon's country has been updated");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        /**
+         * Exercise SQL05
+         * create a view italian_students that gets all the name and surname of the Italian students
+         * create a view german_students that gets all the name and surname of the German students
+         * execute a select using the italian_students and put the result in an ArrayList of Student objects called italianStudents
+         * execute a select using the german_students and put the result in an ArrayList of Student objects called germanStudents
          */
-}
+
+        try {
+            StudentDB.createFilterByCountryOnStudents("Italy");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            StudentDB.createFilterByCountryOnStudents("Germany");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<Student> italianStudents;
+        try {
+            italianStudents = StudentDB.createStudentList("Italy");
+            for (Student student: italianStudents) {
+                System.out.println(student.toString());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        List<Student> germanStudents;
+        try {
+            germanStudents = StudentDB.createStudentList("Germany");
+            for (Student student: germanStudents) {
+                System.out.println(student.toString());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

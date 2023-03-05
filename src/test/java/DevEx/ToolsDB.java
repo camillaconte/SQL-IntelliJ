@@ -10,9 +10,10 @@ public class ToolsDB {
      */
     public static void createTable(String database, String tableName) throws SQLException {
         ConnectionDB connection = new ConnectionDB(database);
-        String query = "CREATE TABLE IF NOT EXISTS" + tableName + "(\n" +
+        String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(\n" +
                 "id INT(10) NOT NULL AUTO_INCREMENT,\n" +
                 "PRIMARY KEY (id));";
+                //"constraint " + tableName + "_pk PRIMARY KEY (" + tableName + "_id));";
         connection.connection.createStatement().executeUpdate(query);
         System.out.printf("Table %s has been created \n", tableName);
         connection.connection.close();
@@ -30,6 +31,7 @@ public class ToolsDB {
         ConnectionDB connection = new ConnectionDB(database);
         String query = "ALTER TABLE " + tableName + " ADD " + newColumn + " " + columnType + ";";
         connection.connection.createStatement().executeUpdate(query);
+        System.out.println("New column \"" + newColumn + "\" has been created!");
         connection.connection.close();
     }
 
